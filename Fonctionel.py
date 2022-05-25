@@ -13,10 +13,9 @@ i = 0
 n = int(input("Combien de frames ? "))
 
 def framing(n):
-    #Boucle jusqu'au nombre de frames demandé (+4 car problème avec timesleep > 1 sec, 
-    # les 5 premières frames ne sont pas espacé avec le temps demandé.
-    for i in range (n+4):
-        time.sleep(3)
+    #Boucle jusqu'au nombre de frames demandé 
+    for i in range (n):
+        time.sleep(1)
         #ret est un booléen permettant de savoir si la caméra est toujours allumée.
         #frame récupère une frame capturé de la caméra.
         ret, frame = cap.read()
@@ -41,17 +40,15 @@ def framing(n):
         #Initialisation pour le format de notre log.
         Log_Format = "%(message)s"
         
-        #Même idée que pour le n+4 , on récupère que la 4eme frame pour éviter des doublons ou des images peu espacées
-        if i >= 4:
-            #Configuration du "log", nom, mode d'écriture.
-            logging.basicConfig(filename = "logfile.log",
+        #Configuration du "log", nom, mode d'écriture.
+        logging.basicConfig(filename = "logfile.log",
                                 filemode = "w",
                                 format = Log_Format)
-            logger = logging.getLogger()
-            #Le message du log sera en fait notre encodage B64 de notre image.
-            #On rajoute l'entete B64 avant pour pouvoir display l'image dans notre dashboard Grafana.
-            logger.error('data:image/jpeg;base64,' + my_string.decode('utf-8'))
-            print('Frame ' + str(i-4) + ' enregistrée')
+        logger = logging.getLogger()
+        #Le message du log sera en fait notre encodage B64 de notre image.
+        #On rajoute l'entete B64 avant pour pouvoir display l'image dans notre dashboard Grafana.
+        logger.error('data:image/jpeg;base64,' + my_string.decode('utf-8'))
+        print('Frame ' + str(i) + ' enregistrée')
             
         i += 1
     
